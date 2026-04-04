@@ -383,17 +383,25 @@
 
     <div class="modal-overlay" id="discountModal">
         <div class="modal-content">
-            <form name="fluffclub" method="POST" data-netlify="true">
-  <!-- Hidden input so Netlify recognizes the form -->
-  <input type="hidden" name="form-name" value="fluffclub">
+  <span class="close-modal" onclick="closeModal()">&times;</span>
+  <h2 style="font-size: 2rem;">Sweeten the Deal! 🍬</h2>
+  <p>Join our Fluff Club and get <strong>10% OFF!</strong> your first order.</p>
 
-  <input type="email" name="email" placeholder="Your email address" 
-         style="width: 100%; padding: 15px; margin: 20px 0; 
-                border: 1px solid #ddd; border-radius: 10px; outline: none;" required>
+  <!-- Netlify form starts here -->
+  <form name="fluffclub" method="POST" data-netlify="true">
+    <!-- Hidden input ensures Netlify recognizes the form -->
+    <input type="hidden" name="form-name" value="fluffclub">
 
-  <button type="submit" class="btn btn-primary" style="width: 100%;">Claim Discount</button>
-</form>
-        </div>
+    <input type="email" name="email" placeholder="Your email address"
+           style="width: 100%; padding: 15px; margin: 20px 0;
+                  border: 1px solid #ddd; border-radius: 10px; outline: none;" required>
+
+    <button type="submit" class="btn btn-primary" style="width: 100%;">Claim Discount</button>
+  </form>
+  <!-- Netlify form ends here -->
+
+  <p style="font-size: 0.7rem; margin-top: 15px; opacity: 0.6;">Valid for new members only.</p>
+</div>
     </div>
 
     <script>
