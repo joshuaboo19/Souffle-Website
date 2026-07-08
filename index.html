@@ -179,6 +179,12 @@
             .hero-content h1 { font-size: 3rem; }
         }
     </style>
+
+<style>
+.order-form .field{margin:12px 0}
+.order-form input,.order-form textarea,.order-form select{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px}
+.qty{display:flex;align-items:center;gap:10px}.qty button{width:36px;height:36px}
+</style>
 </head>
 <body>
 
@@ -190,7 +196,7 @@
                 <li><a href="#menu">Menu</a></li>
                 <li><a href="#process">The Craft</a></li>
                 <li><a href="#faq">FAQ</a></li>
-                <li><a href="#menu" class="btn btn-primary">Order Now</a></li>
+                <li><button class="btn btn-primary" id="openOrderModal">Order Now</button></li>
             </ul>
             <div class="hamburger" onclick="toggleMenu()">☰</div>
         </div>
@@ -250,7 +256,7 @@
                         <h3>The Original Cloud</h3>
                         <p>Three stacks of pure fluff served with honeycomb butter and pure maple syrup.</p>
                         <p class="menu-price">$14.50</p>
-                        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                        <button class="btn btn-primary" style="width: 100%;">Order This</button>
                     </div>
                 </div>
                 <div class="menu-card reveal">
@@ -261,7 +267,7 @@
                         <h3>Summer Berry Bliss</h3>
                         <p>Topped with vanilla bean cream, macerated berries, and a dusting of snow sugar.</p>
                         <p class="menu-price">$16.50</p>
-                        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                        <button class="btn btn-primary" style="width: 100%;">Order This</button>
                     </div>
                 </div>
                 <div class="menu-card reveal">
@@ -272,7 +278,7 @@
                         <h3>Matcha Garden</h3>
                         <p>Premium Uji Matcha dust, sweetened red bean paste, and a side of mochi pearls.</p>
                         <p class="menu-price">$17.00</p>
-                        <button class="btn btn-primary" style="width: 100%;">Add to Cart</button>
+                        <button class="btn btn-primary" style="width: 100%;">Order This</button>
                     </div>
                 </div>
             </div>
@@ -498,6 +504,54 @@
             sessionStorage.setItem('modalSeen', 'true');
         }
     </script>
-</body>
+
+<div class="modal-overlay" id="orderModal">
+<div class="modal-content">
+<span class="close-modal" onclick="closeOrderModal()">&times;</span>
+<h2>🥞 Place Your Order</h2>
+<form class="order-form" id="orderForm">
+<div class="field"><input required id="custName" placeholder="Full Name"></div>
+<div class="field"><input required id="custPhone" placeholder="Phone Number"></div>
+<div class="field"><input id="custEmail" type="email" placeholder="Email (optional)"></div>
+<div class="field"><textarea required id="custAddress" placeholder="Delivery Address"></textarea></div>
+<div class="field"><select id="product">
+<option>The Original Cloud</option>
+<option>Summer Berry Bliss</option>
+<option>Matcha Garden</option>
+</select></div>
+<div class="field qty">
+<button type="button" id="minus">-</button>
+<input id="qty" value="1" readonly>
+<button type="button" id="plus">+</button>
+</div>
+<div class="field">
+<select id="payment"><option>Cash</option><option>GCash</option><option>Maya</option></select>
+</div>
+<div class="field"><textarea id="notes" placeholder="Special Instructions"></textarea></div>
+<p><strong>Total: $<span id="total">14.50</span></strong></p>
+<button class="btn btn-primary" type="submit" style="width:100%">Place Order</button>
+</form>
+<div id="orderSuccess" style="display:none">
+<h3>🎉 Order Received!</h3><p>Thank you! We'll contact you shortly.</p>
+</div>
+</div></div>
+
+<script>
+const prices={'The Original Cloud':14.5,'Summer Berry Bliss':16.5,'Matcha Garden':17};
+const om=document.getElementById('orderModal');
+document.getElementById('openOrderModal')?.addEventListener('click',()=>om.style.display='flex');
+document.querySelectorAll('.menu-card').forEach(c=>{
+ const b=c.querySelector('button');
+ if(!b)return;
+ b.onclick=()=>{document.getElementById('product').value=c.querySelector('h3').innerText;calc();om.style.display='flex';}
+});
+function closeOrderModal(){om.style.display='none'}
+window.closeOrderModal=closeOrderModal;
+function calc(){let p=document.getElementById('product').value,q=+document.getElementById('qty').value;document.getElementById('total').innerText=(prices[p]*q).toFixed(2);}
+document.getElementById('product').onchange=calc;
+plus.onclick=()=>{qty.value=+qty.value+1;calc()}
+minus.onclick=()=>{if(+qty.value>1){qty.value=+qty.value-1;calc()}}
+document.getElementById('orderForm').onsubmit=(e)=>{e.preventDefault();orderForm.style.display='none';orderSuccess.style.display='block';}
+</script></body>
 
 </html>
